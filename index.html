@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Balls</title>
+<title>Balls1</title>
 </head>
 <body>
 
@@ -73,12 +73,22 @@ function stopClip(c,p1,p2,tr){
 	while(mag(subtractv(temp2,temp1))<tr){
 		temp1.x-=move*Math.cos(c);
 		temp1.y-=move*Math.sin(c);
-		temp2.x-=move*Math.cos(c+180);
-		temp2.y-=move*Math.sin(c+180);
+		temp2.x-=move*Math.cos(c+Math.PI);
+		temp2.y-=move*Math.sin(c+Math.PI);
 	}
-	return [temp1,temp2];
+	return;
 }
 	function handleCollisions(p1,p2,v1,v2,m1,m2){
+		var con=Math.acos((p2.x-p1.x)/mag(subtractv(v2,v1));
+		var perp=con+Math.PI/2;
+		if(p2.y-p1.y<0){
+			con*=-1;
+		}
+		var n = {x:cos(con),y:sin(con)};
+		var t = {x:cos(perp),y:sin(perp)};
+		var vn1=(m1*dot(v1,n)+m2*dot(v2,n)-m2(dot(v1,n)-dot(v2,n)))/(m1+m2)
+		var vn2=dot(v1,n)+vf1-dot(v2,n);
+		return[{x:vn1*Math.cos(con)+dot(v1,t)*Math.cos(perp),y:vn1*Math.sin(con)+dot(v1,t)*Math.sin(perp)},{x:vn2*Math.cos(con)+dot(v2,t)*Math.cos(perp),y:vn2*Math.sin(con)+dot(v2,t)*Math.sin(perp)},];
 		
 	}
 	  
@@ -86,8 +96,13 @@ function stopClip(c,p1,p2,tr){
 		  for(var i = 0;i<ball.length;i++){
 			  for(var j = i;j<ball.length;j++){
 				if(mag(subtractv(ball[i].pos,ball[j].pos))<ball[i].r+ball[j].r){
-					//ballpos[i]
-					handleCollisions(ball[i].pos,ballpos[j].pos,ballvel[i],ballvel[j],ballmass[i],ballmass[i]);
+					var con=Math.acos((ball[j].pos.x-ball[i].pos.x)/mag(subtractv(ball[j].vel,ball[i].vel));
+						if(ball[j].pos.y-ball[i]pos.y<0){
+							con*=-1;
+							}
+					stopClip(con,ball[i].pos,ball[j].pos,ball[j].r+ball[i].r);
+					ball[i].vel=handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[0];
+					ball[j].vel=handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[1];
 				}  
 			  }
 		  }
@@ -111,6 +126,10 @@ function stopClip(c,p1,p2,tr){
 			ball[i].pos.y = 0.0;
 			ball[i].vel.y = -ball[i].vel.y;
 		}
+		if (ball[i].pos.y > simHeight) {
+			ball[i].pos.y =sim Height;
+			ball[i].vel.y = -ball[i].vel.y;
+		}
 	}
 	}
 
@@ -118,6 +137,7 @@ function stopClip(c,p1,p2,tr){
 
 	function update() {
 		simulate();
+		checkCollisions();
 		draw();
 		requestAnimationFrame(update);
 	}
