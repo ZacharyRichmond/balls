@@ -1,0 +1,130 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Physics</title>
+</head>
+<body>
+
+<canvas id="myCanvas" style="border:2px solid"></canvas>
+  <script>
+	
+var canvas = document.getElementById("myCanvas");
+	var c = canvas.getContext("2d");
+
+	canvas.width = window.innerWidth - 20;
+	canvas.height = window.innerHeight - 100;
+
+	var simMinWidth = 20.0;
+	var cScale = Math.min(canvas.width, canvas.height) / simMinWidth;
+	var simWidth = canvas.width / cScale;
+	var simHeight = canvas.height / cScale;
+	  const ball=[];
+	function addBall(xi,yi,ri,xveli,yveli,mi){
+		ball.push({pos:{x:xi,y:yi},vel:{x:xveli,y:yveli},r:ri,m:mi});
+	}
+
+	  function dot(v1,v2){
+		  return v1.x*v2.x+v1.y*v2.y;
+	  }
+	  function mag(v){
+		  return Math.sqrt(v.x*v.x+v.y*v.y);
+	  }
+	  function addv(v1,v2){
+		  return{x:v1.x+v2.x,y:v1.y+v2.y};
+	  }
+	  function subtractv(v1,v2){
+		  return {x:v1.x-v2.x,y:v1.y-v2.y};
+	  }
+	  
+	function cX(pos) {
+		return pos.x * cScale;
+	}
+
+	function cY(pos) {
+		return canvas.height - pos.y * cScale;
+	}
+
+	// scene -------------------------------------------------------
+
+	var gravity = { x: 0.0, y: -10.0};
+	var timeStep = 1.0 / 60.0;
+	// drawing -------------------------------------------------------
+
+	function draw() {
+		c.clearRect(0, 0, canvas.width, canvas.height);
+
+		c.fillStyle = "#FF0000";
+for(var i =0;i<ball.length;i++){
+		c.beginPath();			
+		c.arc(
+      cX(ball[i].pos), cY(ball[i].pos), cScale * ball[i].r, 0.0, 2.0 * Math.PI); 
+		c.closePath();
+      		c.fill();	
+}
+	}
+
+	// simulation ----------------------------------------------------
+function stopClip(c,p1,p2,tr){
+	var temp1=p1;
+	var temp2=p2;
+	var move=0.1;
+	while(mag(subtractv(temp2,temp1))<tr){
+		temp1.x-=move*Math.cos(c);
+		temp1.y-=move*Math.sin(c);
+		temp2.x-=move*Math.cos(c+180);
+		temp2.y-=move*Math.sin(c+180);
+	}
+	return temp1,temp2;
+}
+	function handleCollisions(p1,p2,v1,v2,m1,m2){
+		
+	}
+	  function checkCollisions(){
+		  for(var i = 0;i<ball.length;i++){
+			  for(var j = i;j<ball.length;j++){
+				if(mag(subtractv(ball[i].pos,ball[j].pos))<ball[i].r+ball[j].r){
+					//ballpos[i]
+					handleCollisions(ball[i].pos,ballpos[j].pos,ballvel[i],ballvel[j],ballmass[i],ballmass[i]);
+				}  
+			  }
+		  }
+	  }
+	function simulate() {
+	for(var i =0;i<ball.length;i++){
+		ball[i].vel.x += gravity.x * timeStep;
+		ball[i].vel.y += gravity.y * timeStep;
+		ball[i].pos.x += ball[i].vel.x * timeStep;
+		ball[i].pos.y+= ball[i].vel.y * timeStep;
+
+		if (ball[i].pos.x < 0.0) {
+			ball[i].pos.x = 0.0;
+			ball[i].vel.x = -ball[i].vel.x;
+		}
+		if (ball[i].pos.x > simWidth) {
+			ball[i].pos.x = simWidth;
+			ball[i].vel.x= -ball[i].vel.x;
+		}
+		if (ball[i].pos.y < 0.0) {
+			ball[i].pos.y = 0.0;
+			ball[i].vel.y = -ball[i].vel.y;
+		}
+	}
+	}
+
+	// make browser to call us repeatedly -----------------------------------
+
+	function update() {
+		simulate();
+		draw();
+		requestAnimationFrame(update);
+	}
+
+addBall(0.2,0.2,0.2,10,15,1);
+ update();
+
+  </script>
+
+</body>
+</html>
