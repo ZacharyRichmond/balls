@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Balls1</title>
+<title>Balls</title>
 </head>
 <body>
 
@@ -97,7 +97,7 @@ function stopClip(c,p1,p2,tr){
 			  for(var j = i;j<ball.length;j++){
 				if(mag(subtractv(ball[i].pos,ball[j].pos))<ball[i].r+ball[j].r){
 					var con=Math.acos((ball[j].pos.x-ball[i].pos.x)/mag(subtractv(ball[j].vel,ball[i].vel));
-						if(ball[j].pos.y-ball[i]pos.y<0){
+						if(ball[j].pos.y-ball[i].pos.y<0){
 							con*=-1;
 							}
 					stopClip(con,ball[i].pos,ball[j].pos,ball[j].r+ball[i].r);
