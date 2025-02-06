@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Physics</title>
+<title>Balls</title>
 </head>
 <body>
 
@@ -48,7 +48,7 @@ var canvas = document.getElementById("myCanvas");
 
 	// scene -------------------------------------------------------
 
-	var gravity = { x: 0.0, y: -10.0};
+	var gravity = { x: 0.0, y: 0.0};
 	var timeStep = 1.0 / 60.0;
 	// drawing -------------------------------------------------------
 
@@ -76,11 +76,12 @@ function stopClip(c,p1,p2,tr){
 		temp2.x-=move*Math.cos(c+180);
 		temp2.y-=move*Math.sin(c+180);
 	}
-	return temp1,temp2;
+	return [temp1,temp2];
 }
 	function handleCollisions(p1,p2,v1,v2,m1,m2){
 		
 	}
+	  
 	  function checkCollisions(){
 		  for(var i = 0;i<ball.length;i++){
 			  for(var j = i;j<ball.length;j++){
