@@ -9,140 +9,156 @@
 
 <canvas id="myCanvas" style="border:2px solid"></canvas>
   <script>
-	
+
 var canvas = document.getElementById("myCanvas");
-	var c = canvas.getContext("2d");
+  var c = canvas.getContext("2d");
 
-	canvas.width = window.innerWidth - 20;
-	canvas.height = window.innerHeight - 100;
+  canvas.width = window.innerWidth - 20;
+  canvas.height = window.innerHeight - 100;
 
-	var simMinWidth = 20.0;
-	var cScale = Math.min(canvas.width, canvas.height) / simMinWidth;
-	var simWidth = canvas.width / cScale;
-	var simHeight = canvas.height / cScale;
-	  const ball=[];
-	function addBall(xi,yi,ri,xveli,yveli,mi){
-		ball.push({pos:{x:xi,y:yi},vel:{x:xveli,y:yveli},r:ri,m:mi});
-	}
+  var simMinWidth = 20.0;
+  var cScale = Math.min(canvas.width, canvas.height) / simMinWidth;
+  var simWidth = canvas.width / cScale;
+  var simHeight = canvas.height / cScale;
+    const ball=[];
+  function addBall(xi,yi,ri,xveli,yveli,mi){
+    ball.push({pos:{x:xi,y:yi},vel:{x:xveli,y:yveli},r:ri,m:mi});
+  }
 
-	  function dot(v1,v2){
-		  return v1.x*v2.x+v1.y*v2.y;
-	  }
-	  function mag(v){
-		  return Math.sqrt(v.x*v.x+v.y*v.y);
-	  }
-	  function addv(v1,v2){
-		  return{x:v1.x+v2.x,y:v1.y+v2.y};
-	  }
-	  function subtractv(v1,v2){
-		  return {x:v1.x-v2.x,y:v1.y-v2.y};
-	  }
-	  
-	function cX(pos) {
-		return pos.x * cScale;
-	}
+    function dot(v1,v2){
+      return v1.x*v2.x+v1.y*v2.y;
+    }
+    function mag(v){
+      return Math.sqrt(v.x*v.x+v.y*v.y);
+    }
+    function addv(v1,v2){
+      return{x:v1.x+v2.x,y:v1.y+v2.y};
+    }
+    function subtractv(v1,v2){
+      return {x:v1.x-v2.x,y:v1.y-v2.y};
+    }
 
-	function cY(pos) {
-		return canvas.height - pos.y * cScale;
-	}
+  function cX(pos) {
+    return pos.x * cScale;
+  }
 
-	// scene -------------------------------------------------------
+  function cY(pos) {
+    return canvas.height - pos.y * cScale;
+  }
 
-	var gravity = { x: 0.0, y: 0.0};
-	var timeStep = 1.0 / 60.0;
-	// drawing -------------------------------------------------------
+  // scene -------------------------------------------------------
 
-	function draw() {
-		c.clearRect(0, 0, canvas.width, canvas.height);
+  var gravity = { x: 0.0, y: 0.0};
+  var dt = 1.0 / 60.0;
+  // drawing -------------------------------------------------------
 
-		c.fillStyle = "#FF0000";
+  function draw() {
+    c.clearRect(0, 0, canvas.width, canvas.height);
+
+    c.fillStyle = "#FF0000";
 for(var i =0;i<ball.length;i++){
-		c.beginPath();			
-		c.arc(
+    c.beginPath();			
+    c.arc(
       cX(ball[i].pos), cY(ball[i].pos), cScale * ball[i].r, 0.0, 2.0 * Math.PI); 
-		c.closePath();
-      		c.fill();	
+    c.closePath();
+          c.fill();	
 }
-	}
+  }
 
-	// simulation ----------------------------------------------------
-function stopClip(c){
-	var move=0.1;
-	while(mag(subtractv(temp2,temp1))<ball[i].r+ball[j].r){
-		ball[i].x-=move*Math.cos(c);
-		ball[i].y-=move*Math.sin(c);
-		ball[j].x-=move*Math.cos(c+Math.PI);
-		ball[j].y-=move*Math.sin(c+Math.PI);
-	}
-	return;
+  // simulation ----------------------------------------------------
+function stopClip(a1,a2,c,p1,p2,tr){
+  var move=0.1;
+  while(mag(subtractv(p1,p2))<tr){
+    p1.x-=move*Math.cos(c);
+    p1.y-=move*Math.sin(c);
+   p2.x-=move*Math.cos(c+Math.PI/2);
+    p2.y-=move*Math.sin(c+Math.PI/2);
+  }
+  return;
 }
-	function handleCollisions(p1,p2,v1,v2,m1,m2){
-		var con=Math.acos((p2.x-p1.x)/mag(subtractv(v2,v1)));
-		if(p2.y-p1.y<0){
-			con*=-1;
-		}
-		var perp=con+Math.PI/2;
-		var n = {x:cos(con),y:sin(con)};
-		var t = {x:cos(perp),y:sin(perp)};
-		var vn1=(m1*dot(v1,n)+m2*dot(v2,n)-m2(dot(v1,n)-dot(v2,n)))/(m1+m2);
-		var vn2=dot(v1,n)+vn1-dot(v2,n);
-		return[{x:vn1*Math.cos(con)+dot(v1,t)*Math.cos(perp),y:vn1*Math.sin(con)+dot(v1,t)*Math.sin(perp)},{x:vn2*Math.cos(con)+dot(v2,t)*Math.cos(perp),y:vn2*Math.sin(con)+dot(v2,t)*Math.sin(perp)}];
-		
-	}
-	  
-	  function checkCollisions(){
-		  for(var i = 0;i<ball.length;i++){
-			  for(var j = i+1;j<ball.length;j++){
-				if(mag(subtractv(ball[i].pos,ball[j].pos))<ball[i].r+ball[j].r){
-					var c=Math.acos((ball[j].pos.x-ball[i].pos.x)/mag(subtractv(ball[j].vel,ball[i].vel)));
-						if(ball[j].pos.y-ball[i].pos.y<0){
-							c*=-1;
-							}
-					//stopClip(c);
-					ball[i].vel=handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[0];
-					ball[j].vel=handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[1];
-				}  
-			  }
-		  }
-	  }
-	function simulate() {
-	for(var i =0;i<ball.length;i++){
-		ball[i].vel.x += gravity.x * timeStep;
-		ball[i].vel.y += gravity.y * timeStep;
-		ball[i].pos.x += ball[i].vel.x * timeStep;
-		ball[i].pos.y+= ball[i].vel.y * timeStep;
+  function handleCollisions(p1,p2,v1,v2,m1,m2){
+    var con=Math.acos((p2.x-p1.x)/mag(subtractv(v2,v1)));
+    if(p2.y-p1.y<0){
+      con*=-1;
+    }
+    var perp=con+Math.PI/2;
+    var n = {x:Math.cos(con),y:Math.sin(con)};
+    var t = {x:Math.cos(perp),y:Math.sin(perp)};
+    var vn1=(m1*dot(v1,n)+m2*dot(v2,n)-m2*(dot(v1,n)-dot(v2,n)))/(m1+m2);
+    var vn2=dot(v1,n)+vn1-dot(v2,n);
+    return[{x:vn1*Math.cos(con)+dot(v1,t)*Math.cos(perp),y:vn1*Math.sin(con)+dot(v1,t)*Math.sin(perp)},{x:vn2*Math.cos(con)+dot(v2,t)*Math.cos(perp),y:vn2*Math.sin(con)+dot(v2,t)*Math.sin(perp)}];
 
-		if (ball[i].pos.x < 0.0) {
-			ball[i].pos.x = 0.0;
-			ball[i].vel.x = -ball[i].vel.x;
-		}
-		if (ball[i].pos.x > simWidth) {
-			ball[i].pos.x = simWidth;
-			ball[i].vel.x= -ball[i].vel.x;
-		}
-		if (ball[i].pos.y < 0.0) {
-			ball[i].pos.y = 0.0;
-			ball[i].vel.y = -ball[i].vel.y;
-		}
-		if (ball[i].pos.y > simHeight) {
-			ball[i].pos.y =simHeight;
-			ball[i].vel.y = -ball[i].vel.y;
-		}
-	}
-	}
+  }
 
-	// make browser to call us repeatedly -----------------------------------
+    function checkCollisions(){
+      for(var i = 0;i<ball.length;i++){
+        for(var j = i+1;j<ball.length;j++){
+        if(mag(subtractv(ball[i].pos,ball[j].pos))<ball[i].r+ball[j].r){
+      var c=Math.acos((ball[j].pos.x-ball[i].pos.x)/mag(subtractv(ball[j].vel,ball[i].vel)));
+      if(ball[j].pos.y-ball[i].pos.y<0){
+         c*=-1;
+          }
+          var a1=Math.acos((ball[i].vel.x)/mag(ball[i].vel));
+          if(ball[i].vel.y<0){
+            a1*=-1;
+            }
+           var a2=Math.acos((ball[j].vel.x)/mag(ball[j].vel));
+          if(ball[j].vel.y<0){
+            a2*=-1;
+            }
+          console.log(a1);
+          console.log(a2);
+          ball[i].pos.x-=dt*ball[i].vel.x;
+          ball[i].pos.y-=dt*ball[i].vel.y;
+          ball[j].pos.x-=dt*ball[j].vel.x;
+          ball[j].pos.y-=dt*ball[j].vel.y;
+          //stopClip(a1,a2,c,ball[i].pos,ball[j].pos,ball[i].r+ball[j].r);
+          ball[i].vel=handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[0];
+          ball[j].vel=handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[1];
+        }  
+        }
+      }
+    }
+  function simulate() {
+  for(var i =0;i<ball.length;i++){
+    ball[i].vel.x += gravity.x * dt;
+    ball[i].vel.y += gravity.y * dt;
+    ball[i].pos.x += ball[i].vel.x * dt;
+    ball[i].pos.y+= ball[i].vel.y * dt;
 
-	function update() {
-		console.log("hi");
-		simulate();
-		checkCollisions();
-		draw();
-		requestAnimationFrame(update);
-	}
+    if (ball[i].pos.x < 0.0+ball[i].r) {
+      ball[i].pos.x = 0.0+ball[i].r;
+      ball[i].vel.x = -ball[i].vel.x;
+    }
+    if (ball[i].pos.x > simWidth-ball[i].r) {
+      ball[i].pos.x = simWidth-ball[i].r;
+      ball[i].vel.x= -ball[i].vel.x;
+    }
+    if (ball[i].pos.y < 0.0+ball[i].r) {
+      ball[i].pos.y = 0.0+ball[i].r;
+      ball[i].vel.y = -ball[i].vel.y;
+    }
+    if (ball[i].pos.y > simHeight-ball[i].r) {
+      ball[i].pos.y =simHeight-ball[i].r;
+      ball[i].vel.y = -ball[i].vel.y;
+    }
+  }
+  }
 
+  // make browser to call us repeatedly -----------------------------------
+
+  function update() {
+   // console.log("hi");
+    simulate();
+    checkCollisions();
+    draw();
+    requestAnimationFrame(update);
+  }
+addBall(20,0.2,0.2,10,15,1);
+    addBall(5,0.2,0.2,10,15,1);
+    addBall(15,0.2,0.2,10,15,1);
+addBall(20,20,0.5,3,3,3);
 addBall(0.2,0.2,0.2,10,15,1);
-addBall(30,0.2,0.2,20,5,1);
  update();
 
   </script>
