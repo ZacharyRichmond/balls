@@ -69,24 +69,33 @@ for(var i =0;i<ball.length;i++){
 function stopClip(a1,a2,c,p1,p2,tr){
   var move=0.1;
   while(mag(subtractv(p1,p2))<tr){
-    p1.x-=move*Math.cos(c);
-    p1.y-=move*Math.sin(c);
-   p2.x-=move*Math.cos(c+Math.PI/2);
-    p2.y-=move*Math.sin(c+Math.PI/2);
+    //p1.x-=move*Math.cos(c);
+   // p1.y-=move*Math.sin(c);
+  // p2.x-=move*Math.cos(c+Math.PI/2);
+    //p2.y-=move*Math.sin(c+Math.PI/2);
+    p1.x -= move*Math.cos(a1);
+    p1.y -= move*Math.sin(a1);
+    p2.x -= move*Math.cos(a2);
+    p2.y -= move*Math.sin(a2);
   }
   return;
 }
   function handleCollisions(p1,p2,v1,v2,m1,m2){
-    var con=Math.acos((p2.x-p1.x)/mag(subtractv(v2,v1)));
+    var con=Math.acos((p2.x-p1.x)/mag(subtractv(p2,p1)));
     if(p2.y-p1.y<0){
       con*=-1;
     }
+    //console.log(con);
     var perp=con+Math.PI/2;
     var n = {x:Math.cos(con),y:Math.sin(con)};
     var t = {x:Math.cos(perp),y:Math.sin(perp)};
     var vn1=(m1*dot(v1,n)+m2*dot(v2,n)-m2*(dot(v1,n)-dot(v2,n)))/(m1+m2);
     var vn2=dot(v1,n)+vn1-dot(v2,n);
-    return[{x:vn1*Math.cos(con)+dot(v1,t)*Math.cos(perp),y:vn1*Math.sin(con)+dot(v1,t)*Math.sin(perp)},{x:vn2*Math.cos(con)+dot(v2,t)*Math.cos(perp),y:vn2*Math.sin(con)+dot(v2,t)*Math.sin(perp)}];
+    var v1f={x:vn1*Math.cos(con)+dot(v1,t)*Math.cos(perp),y:vn1*Math.sin(con)+dot(v1,t)*Math.sin(perp)};
+    var v2f={x:vn2*Math.cos(con)+dot(v2,t)*Math.cos(perp),y:vn2*Math.sin(con)+dot(v2,t)*Math.sin(perp)};
+   // console.log(v1f);
+   // console.log(v2f);
+    return[v1f,v2f];
 
   }
 
@@ -94,7 +103,17 @@ function stopClip(a1,a2,c,p1,p2,tr){
       for(var i = 0;i<ball.length;i++){
         for(var j = i+1;j<ball.length;j++){
         if(mag(subtractv(ball[i].pos,ball[j].pos))<ball[i].r+ball[j].r){
+          temp= handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[1];
+          ball[i].vel = handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[0];
+          ball[j].vel = temp;
+//console.log(ball[i]);
+//console.log(ball[j]);
+
+         //while(mag(subtractv(ball[i].pos,ball[j].pos)) < ball[i].r+ball[j].r){
+         // }
+          /*
       var c=Math.acos((ball[j].pos.x-ball[i].pos.x)/mag(subtractv(ball[j].vel,ball[i].vel)));
+          
       if(ball[j].pos.y-ball[i].pos.y<0){
          c*=-1;
           }
@@ -106,15 +125,14 @@ function stopClip(a1,a2,c,p1,p2,tr){
           if(ball[j].vel.y<0){
             a2*=-1;
             }
-          console.log(a1);
-          console.log(a2);
-          ball[i].pos.x-=dt*ball[i].vel.x;
-          ball[i].pos.y-=dt*ball[i].vel.y;
-          ball[j].pos.x-=dt*ball[j].vel.x;
-          ball[j].pos.y-=dt*ball[j].vel.y;
-          //stopClip(a1,a2,c,ball[i].pos,ball[j].pos,ball[i].r+ball[j].r);
-          ball[i].vel=handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[0];
-          ball[j].vel=handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[1];
+          //console.log(a1);
+         // console.log(a2);
+          //ball[i].pos.x-=dt*ball[i].vel.x;
+         // ball[i].pos.y-=dt*ball[i].vel.y;
+         // ball[j].pos.x-=dt*ball[j].vel.x;
+          //ball[j].pos.y-=dt*ball[j].vel.y;
+         // stopClip(a1,a2,c,ball[i].pos,ball[j].pos,ball[i].r+ball[j].r);
+    */
         }  
         }
       }
@@ -154,11 +172,12 @@ function stopClip(a1,a2,c,p1,p2,tr){
     draw();
     requestAnimationFrame(update);
   }
-addBall(20,0.2,0.2,10,15,1);
-    addBall(5,0.2,0.2,10,15,1);
-    addBall(15,0.2,0.2,10,15,1);
-addBall(20,20,0.5,3,3,3);
-addBall(0.2,0.2,0.2,10,15,1);
+addBall(0,10,0.2,5,2,1);
+    addBall(10,10,0.2,-5,1,1);
+    addBall(1,3,0.2,5,-1,1);
+    addBall(6,9,0.7,-5,3,3);
+    addBall(13,10,1.2,5,0.1,1);
+    addBall(15,15,0.9,-5,-2,4);
  update();
 
   </script>
