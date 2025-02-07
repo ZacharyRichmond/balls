@@ -66,15 +66,13 @@ for(var i =0;i<ball.length;i++){
 	}
 
 	// simulation ----------------------------------------------------
-function stopClip(c,p1,p2,tr){
-	var temp1=p1;
-	var temp2=p2;
+function stopClip(c){
 	var move=0.1;
-	while(mag(subtractv(temp2,temp1))<tr){
-		temp1.x-=move*Math.cos(c);
-		temp1.y-=move*Math.sin(c);
-		temp2.x-=move*Math.cos(c+Math.PI);
-		temp2.y-=move*Math.sin(c+Math.PI);
+	while(mag(subtractv(temp2,temp1))<ball[i].r+ball[j].r){
+		ball[i].x-=move*Math.cos(c);
+		ball[i].y-=move*Math.sin(c);
+		ball[j].x-=move*Math.cos(c+Math.PI);
+		ball[j].y-=move*Math.sin(c+Math.PI);
 	}
 	return;
 }
@@ -100,7 +98,7 @@ function stopClip(c,p1,p2,tr){
 						if(ball[j].pos.y-ball[i].pos.y<0){
 							c*=-1;
 							}
-					//stopClip(c,ball[i].pos,ball[j].pos,ball[j].r+ball[i].r);
+					//stopClip(c);
 					ball[i].vel=handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[0];
 					ball[j].vel=handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[1];
 				}  
@@ -136,6 +134,7 @@ function stopClip(c,p1,p2,tr){
 	// make browser to call us repeatedly -----------------------------------
 
 	function update() {
+		console.log("hi");
 		simulate();
 		checkCollisions();
 		draw();
