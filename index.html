@@ -77,7 +77,7 @@ function stopClip(c){
 	return;
 }
 	function handleCollisions(p1,p2,v1,v2,m1,m2){
-		var con=Math.acos((p2.x-p1.x)/mag(subtractv(v2,v1));
+		var con=Math.acos((p2.x-p1.x)/mag(subtractv(v2,v1)));
 		if(p2.y-p1.y<0){
 			con*=-1;
 		}
@@ -94,7 +94,7 @@ function stopClip(c){
 		  for(var i = 0;i<ball.length;i++){
 			  for(var j = i+1;j<ball.length;j++){
 				if(mag(subtractv(ball[i].pos,ball[j].pos))<ball[i].r+ball[j].r){
-					var c=Math.acos((ball[j].pos.x-ball[i].pos.x)/mag(subtractv(ball[j].vel,ball[i].vel));
+					var c=Math.acos((ball[j].pos.x-ball[i].pos.x)/mag(subtractv(ball[j].vel,ball[i].vel)));
 						if(ball[j].pos.y-ball[i].pos.y<0){
 							c*=-1;
 							}
@@ -125,7 +125,7 @@ function stopClip(c){
 			ball[i].vel.y = -ball[i].vel.y;
 		}
 		if (ball[i].pos.y > simHeight) {
-			ball[i].pos.y =sim Height;
+			ball[i].pos.y =simHeight;
 			ball[i].vel.y = -ball[i].vel.y;
 		}
 	}
@@ -142,6 +142,7 @@ function stopClip(c){
 	}
 
 addBall(0.2,0.2,0.2,10,15,1);
+addBall(30,0.2,0.2,20,5,1);
  update();
 
   </script>
