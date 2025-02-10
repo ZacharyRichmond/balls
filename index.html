@@ -72,13 +72,17 @@ for(var i =1;i<ball.length;i++){
   }
 
   // simulation ----------------------------------------------------
-function stopClip(c,p1,p2,tr){
+function stopClip(p1,p2,tr){
+  var c = Math.acos((p2.x-p1.x)/(mag(subtractv(p2,p1))));
+  if(p2.y-p1.y<0){
+    c = -c;
+  }
   var move=0.1;
   while(mag(subtractv(p1,p2))<tr){
-    p1.x -= move*dt*Math.cos(a1);
-    p1.y -= move*dt*Math.sin(a1);
-    p2.x += move*dt*Math.cos(a2);
-    p2.y += move*dt*Math.sin(a2);
+    p1.x -= move*dt*Math.cos(c);
+    p1.y -= move*dt*Math.sin(c);
+    p2.x += move*dt*Math.cos(c);
+    p2.y += move*dt*Math.sin(c);
   }
   return;
 }
@@ -105,7 +109,7 @@ function stopClip(c,p1,p2,tr){
       for(var i = 0;i<ball.length;i++){
         for(var j = i+1;j<ball.length;j++){
         if(mag(subtractv(ball[i].pos,ball[j].pos))<ball[i].r+ball[j].r){
-         // stopC
+         stopClip(ball[i].pos,ball[j].pos,ball[j].r+ball[i].r);
           temp= handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[1];
           ball[i].vel = handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[0];
           ball[j].vel = temp;
