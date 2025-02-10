@@ -173,9 +173,9 @@ var har=0;
     var down =false;
   function update() {
    // console.log("hi");
-   ball[0].vel.x=250*hor;
-      ball[0].vel.y=250*ver;
-    if(left&&right){
+  // ball[0].vel.x = 250*hor;
+    //  ball[0].vel.y = 250*ver;
+    if(left && right){
       hor=0;
     }
     else if(left){
@@ -187,7 +187,7 @@ var har=0;
     else{
     hor=0;
     }
-    if(up&&down){
+    if(up && down){
       ver=0;
     }
     else if(down){
