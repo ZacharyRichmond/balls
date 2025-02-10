@@ -173,20 +173,33 @@ var har=0;
     var down =false;
   function update() {
    // console.log("hi");
-   /* ball[0].vel.x=250*hor;
+   ball[0].vel.x=250*hor;
       ball[0].vel.y=250*ver;
     if(left&&right){
       hor=0;
     }
-    else if(left){hor=-0.1;}
-    else if(right){hor=0.1;}
-    else{hor=0;}
+    else if(left){
+    hor=-0.1;
+    }
+    else if(right){
+    hor=0.1;
+    }
+    else{
+    hor=0;
+    }
     if(up&&down){
       ver=0;
     }
-    else if(down){ver=-0.1;}
-    else if(up){ver=0.1;}
-    else{ver=0;}
+    else if(down){
+    ver=-0.1;
+    }
+    else if(up){
+    ver=0.1;
+    }
+    else{
+    ver=0;
+    }
+    /*
    document.addEventListener('keydown', function(event) {
         if(event.keyCode == 37) {
           
@@ -203,6 +216,7 @@ var har=0;
           down=true;
         }
      });
+     
     document.addEventListener('keyup', function(event) {
         if(event.keyCode == 37) {
          left=false;
