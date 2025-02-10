@@ -107,33 +107,7 @@ function stopClip(a1,a2,c,p1,p2,tr){
           temp= handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[1];
           ball[i].vel = handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[0];
           ball[j].vel = temp;
-//console.log(ball[i]);
-//console.log(ball[j]);
 
-         //while(mag(subtractv(ball[i].pos,ball[j].pos)) < ball[i].r+ball[j].r){
-         // }
-          /*
-      var c=Math.acos((ball[j].pos.x-ball[i].pos.x)/mag(subtractv(ball[j].vel,ball[i].vel)));
-          
-      if(ball[j].pos.y-ball[i].pos.y<0){
-         c*=-1;
-          }
-          var a1=Math.acos((ball[i].vel.x)/mag(ball[i].vel));
-          if(ball[i].vel.y<0){
-            a1*=-1;
-            }
-           var a2=Math.acos((ball[j].vel.x)/mag(ball[j].vel));
-          if(ball[j].vel.y<0){
-            a2*=-1;
-            }
-          //console.log(a1);
-         // console.log(a2);
-          //ball[i].pos.x-=dt*ball[i].vel.x;
-         // ball[i].pos.y-=dt*ball[i].vel.y;
-         // ball[j].pos.x-=dt*ball[j].vel.x;
-          //ball[j].pos.y-=dt*ball[j].vel.y;
-         // stopClip(a1,a2,c,ball[i].pos,ball[j].pos,ball[i].r+ball[j].r);
-    */
         }  
         }
       }
@@ -165,7 +139,7 @@ function stopClip(a1,a2,c,p1,p2,tr){
   }
 
   // make browser to call us repeatedly -----------------------------------
-var har=0;
+var hor=0;
     var ver=0;
     var left=false;
     var right=false;
@@ -173,8 +147,8 @@ var har=0;
     var down =false;
   function update() {
    // console.log("hi");
-  // ball[0].vel.x = 250*hor;
-   // ball[0].vel.y = 250*ver;
+  ball[0].vel.x = 250*hor;
+   ball[0].vel.y = 250*ver;
     if(left && right){
       hor=0;
     }
@@ -243,7 +217,7 @@ addBall(20,20,0.6,0,0,1);
     addBall(6,9,0.7,-5,3,3);
     addBall(13,10,1.2,5,0.1,1);
     addBall(15,15,0.9,-5,-2,4);
-    addBall(7,7,1.8,0,0,0.5);
+    addBall(7,0,1.8,0,0,0.5);
     addBall(30,10,0.2,-5,1,1);
     addBall(31,3,0.2,5,-1,1);
     addBall(36,9,0.7,-5,3,3);
