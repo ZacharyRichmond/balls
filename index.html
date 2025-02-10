@@ -55,9 +55,14 @@ var canvas = document.getElementById("myCanvas");
 
   function draw() {
     c.clearRect(0, 0, canvas.width, canvas.height);
-
+      c.fillStyle = "#0000FF";
+ c.beginPath();			
+    c.arc(
+      cX(ball[0].pos), cY(ball[0].pos), cScale * ball[0].r, 0.0, 2.0 * Math.PI); 
+    c.closePath();
+          c.fill();	
     c.fillStyle = "#FF0000";
-for(var i =0;i<ball.length;i++){
+for(var i =1;i<ball.length;i++){
     c.beginPath();			
     c.arc(
       cX(ball[i].pos), cY(ball[i].pos), cScale * ball[i].r, 0.0, 2.0 * Math.PI); 
@@ -67,17 +72,13 @@ for(var i =0;i<ball.length;i++){
   }
 
   // simulation ----------------------------------------------------
-function stopClip(a1,a2,c,p1,p2,tr){
+function stopClip(c,p1,p2,tr){
   var move=0.1;
   while(mag(subtractv(p1,p2))<tr){
-    //p1.x-=move*Math.cos(c);
-   // p1.y-=move*Math.sin(c);
-  // p2.x-=move*Math.cos(c+Math.PI/2);
-    //p2.y-=move*Math.sin(c+Math.PI/2);
-    p1.x -= move*Math.cos(a1);
-    p1.y -= move*Math.sin(a1);
-    p2.x -= move*Math.cos(a2);
-    p2.y -= move*Math.sin(a2);
+    p1.x -= move*dt*Math.cos(a1);
+    p1.y -= move*dt*Math.sin(a1);
+    p2.x += move*dt*Math.cos(a2);
+    p2.y += move*dt*Math.sin(a2);
   }
   return;
 }
@@ -104,6 +105,7 @@ function stopClip(a1,a2,c,p1,p2,tr){
       for(var i = 0;i<ball.length;i++){
         for(var j = i+1;j<ball.length;j++){
         if(mag(subtractv(ball[i].pos,ball[j].pos))<ball[i].r+ball[j].r){
+         // stopC
           temp= handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[1];
           ball[i].vel = handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[0];
           ball[j].vel = temp;
@@ -147,8 +149,8 @@ var hor=0;
     var down =false;
   function update() {
    // console.log("hi");
-  ball[0].vel.x = 250*hor;
-   ball[0].vel.y = 250*ver;
+  ball[0].vel.x = 150*hor;
+   ball[0].vel.y = 150*ver;
     if(left && right){
       hor=0;
     }
@@ -211,7 +213,7 @@ var hor=0;
     draw();
     requestAnimationFrame(update);
   }
-addBall(20,20,0.6,0,0,1);
+addBall(20,20,0.6,0,0,999999999099999999);
     addBall(10,10,0.2,-5,1,1);
     addBall(1,3,0.2,5,-1,1);
     addBall(6,9,0.7,-5,3,3);
