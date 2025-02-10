@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Balls1</title>
+<title>Balls</title>
   <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
 </head>
 <body>
@@ -22,6 +22,7 @@ var canvas = document.getElementById("myCanvas");
   var simWidth = canvas.width / cScale;
   var simHeight = canvas.height / cScale;
     const ball=[];
+    var bounce=0;
   function addBall(xi,yi,ri,xveli,yveli,mi){
     ball.push({pos:{x:xi,y:yi},vel:{x:xveli,y:yveli},r:ri,m:mi});
   }
@@ -55,6 +56,8 @@ var canvas = document.getElementById("myCanvas");
 
   function draw() {
     c.clearRect(0, 0, canvas.width, canvas.height);
+    c.font = "48px serif";
+  c.fillText(String(bounce), 10, 50);
       c.fillStyle = "#0000FF";
  c.beginPath();			
     c.arc(
@@ -113,6 +116,7 @@ function stopClip(p1,p2,tr){
           temp= handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[1];
           ball[i].vel = handleCollisions(ball[i].pos,ball[j].pos,ball[i].vel,ball[j].vel,ball[i].m,ball[j].m)[0];
           ball[j].vel = temp;
+          bounce++;
 
         }  
         }
@@ -128,18 +132,22 @@ function stopClip(p1,p2,tr){
     if (ball[i].pos.x < 0.0+ball[i].r) {
       ball[i].pos.x = 0.0+ball[i].r;
       ball[i].vel.x = -ball[i].vel.x;
+      bounce++;
     }
     if (ball[i].pos.x > simWidth-ball[i].r) {
       ball[i].pos.x = simWidth-ball[i].r;
       ball[i].vel.x= -ball[i].vel.x;
+      bounce++;
     }
     if (ball[i].pos.y < 0.0+ball[i].r) {
       ball[i].pos.y = 0.0+ball[i].r;
       ball[i].vel.y = -ball[i].vel.y;
+      bounce++;
     }
     if (ball[i].pos.y > simHeight-ball[i].r) {
       ball[i].pos.y =simHeight-ball[i].r;
       ball[i].vel.y = -ball[i].vel.y;
+      bounce++;
     }
   }
   }
